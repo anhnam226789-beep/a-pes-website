@@ -1,0 +1,399 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Design tokens
+   Ported 1:1 from the `tailwind.config` block of the original static page.
+   Tailwind v4 is CSS-first, so the old JS config lives here as `@theme`.
+   ========================================================================== */
+@theme {
+  /* Brand (neon) palette */
+  --color-neon-primary: #36d96b;
+  --color-neon-accent: #2fb85c;
+  --color-neon-dark: #0e5b2a;
+  --color-neon-muted: #5f7268;
+  --color-neon-glow: rgba(54, 217, 107, 0.15);
+  --color-neon-glow-heavy: rgba(54, 217, 107, 0.35);
+
+  /* Surfaces */
+  --color-dark-bg: #050505;
+  --color-dark-surface: #0b0f0d;
+  --color-dark-card: #101614;
+  --color-dark-border: rgba(255, 255, 255, 0.07);
+
+  /* Typography colors */
+  --color-txt-primary: #f5f7f6;
+  --color-txt-secondary: #a9b5af;
+
+  /* Font stacks — the CSS variables come from `next/font` in the root layout */
+  --font-sans: var(--font-inter), var(--font-manrope), sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), sans-serif;
+
+  /* Radii */
+  --radius-card: 20px;
+  --radius-btn: 16px;
+
+  /* Shadows */
+  --shadow-neon: 0 0 20px rgba(54, 217, 107, 0.25);
+  --shadow-neon-sm: 0 0 10px rgba(54, 217, 107, 0.2);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+  /* Hero HUD deck: deep inner drop shadow + neon rim light */
+  --shadow-deck:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 -20px 60px -30px rgba(54, 217, 107, 0.45);
+
+  /* Animations */
+  --animate-pulse-glow: pulseGlow 4s infinite ease-in-out;
+  --animate-shake: shake 2.5s infinite ease-in-out;
+  --animate-beat: beat 1.5s infinite ease-in-out;
+
+  @keyframes pulseGlow {
+
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.7;
+      transform: scale(1.03);
+    }
+  }
+
+  @keyframes shake {
+
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+
+    5%,
+    15%,
+    25% {
+      transform: rotate(-12deg);
+    }
+
+    10%,
+    20%,
+    30% {
+      transform: rotate(12deg);
+    }
+
+    35% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes beat {
+
+    0%,
+    100% {
+      transform: scale(1);
+    }
+
+    15% {
+      transform: scale(1.2);
+    }
+
+    30% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes flameUp {
+
+    0%,
+    100% {
+      transform-origin: bottom center;
+      transform: translateY(0) scaleY(1);
+      filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.4));
+    }
+
+    50% {
+      transform-origin: bottom center;
+      transform: translateY(-2px) scaleY(1.15) scaleX(0.95);
+      filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+    }
+  }
+}
+
+@layer base {
+  body {
+    background-color: #050505;
+    color: #f5f7f6;
+    font-family: var(--font-inter), sans-serif;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /*
+   * Tailwind v4 defaults `::placeholder` to 50% of the current text color,
+   * while v3 (used by the original page) defaulted to gray-400.
+   * Restored here so the search inputs keep their original look.
+   */
+  input::placeholder,
+  textarea::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+  }
+}
+
+@layer components {
+  .animate-flame-up {
+    animation: flameUp 1.5s infinite ease-in-out;
+  }
+
+  /* Soft neon light pools on the page background (no grid tiling) */
+  .tech-pitch-bg {
+    background-image:
+      radial-gradient(circle at 80% 20%,
+        rgba(54, 217, 107, 0.08) 0%,
+        transparent 40%),
+      radial-gradient(circle at 10% 80%,
+        rgba(14, 91, 42, 0.15) 0%,
+        transparent 50%);
+  }
+
+  .pitch-lines {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%,
+        transparent 30%,
+        rgba(54, 217, 107, 0.3) 31%,
+        transparent 32%);
+  }
+
+  /* Pitch markings inside the hero feature tile */
+  .mock-pitch {
+    background-image:
+      radial-gradient(circle at 50% 50%,
+        transparent 25%,
+        rgba(255, 255, 255, 0.16) 26%,
+        transparent 27%),
+      linear-gradient(to right,
+        rgba(255, 255, 255, 0.09) 1px,
+        transparent 1px);
+    background-size:
+      100% 100%,
+      34px 100%;
+  }
+
+  .glass-card {
+    background: #101614;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(12px);
+  }
+
+  .neon-border-glow {
+    border: 1px solid #36d96b;
+    box-shadow: 0 0 15px rgba(54, 217, 107, 0.25);
+  }
+
+  /* ==========================================================================
+     Article body rendered from the CMS editor
+     Styles the raw HTML that `dangerouslySetInnerHTML` injects, and is reused
+     as the editor surface in the admin so the CMS is a true WYSIWYG.
+     Kept in CSS rather than utility classes because the markup comes from the
+     database and cannot carry Tailwind classes.
+     ========================================================================== */
+  .article-content {
+    color: #f5f7f6;
+    font-size: 16.5px;
+    line-height: 1.75;
+
+    /*
+     * Wrapping rules, in this exact combination:
+     *  - `break-word` lets an over-long token (a raw URL) wrap instead of
+     *    overflowing, but only after normal word breaks have been tried.
+     *  - `word-break: normal` is what keeps ordinary Vietnamese words whole —
+     *    `break-all` would happily split "nghiệm" across two lines.
+     *  - hyphenation off: no browser hyphenates Vietnamese correctly.
+     */
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .article-content>*+* {
+    margin-top: 1.5rem;
+  }
+
+  .article-content h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  @media (min-width: 640px) {
+    .article-content h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .article-content h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .article-content h4 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .article-content a {
+    color: #36d96b;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .article-content strong {
+    color: #f5f7f6;
+    font-weight: 700;
+  }
+
+  .article-content ul,
+  .article-content ol {
+    padding-left: 1.5rem;
+  }
+
+  .article-content ul {
+    list-style: disc;
+  }
+
+  .article-content ol {
+    list-style: decimal;
+  }
+
+  .article-content li::marker {
+    color: #36d96b;
+  }
+
+  .article-content li+li {
+    margin-top: 0.5rem;
+  }
+
+  .article-content blockquote {
+    padding: 1rem;
+    border-radius: 20px;
+    background: #101614;
+    border: 1px solid rgba(54, 217, 107, 0.3);
+    color: #a9b5af;
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+
+  .article-content pre {
+    background: #080d0a;
+    padding: 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: #6ee7b7;
+    font-size: 0.75rem;
+    /* Code keeps its own line breaks: scroll rather than reflow it. */
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  .article-content code {
+    background: #080d0a;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 6px;
+    padding: 0.1rem 0.35rem;
+    color: #6ee7b7;
+    font-size: 0.85em;
+  }
+
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .article-content hr {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  /* Added by the sanitiser so a wide table scrolls inside its own box
+     instead of pushing the whole page sideways. */
+  .article-table-scroll {
+    overflow-x: auto;
+  }
+
+  .article-content table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .article-content th {
+    background: #101614;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    color: #36d96b;
+    padding: 0.75rem;
+    font-weight: 600;
+  }
+
+  .article-content td {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    color: #a9b5af;
+    padding: 0.75rem;
+  }
+
+  /* Editor-only chrome: a writable min-height and visible table grid. */
+  .admin-editor-surface {
+    min-height: 22rem;
+    padding: 1.25rem;
+  }
+
+  .admin-editor-surface table td,
+  .admin-editor-surface table th {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .admin-editor-surface .ProseMirror-selectednode {
+    outline: 2px solid #36d96b;
+  }
+
+  /* Hide scrollbar for clean horizontal list on mobile */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #101614;
+  border-radius: 4px;
+  border: 1px solid rgba(54, 217, 107, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #36d96b;
+}

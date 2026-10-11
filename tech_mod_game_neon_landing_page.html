@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NexTech - Kho Tools & Game Mod Cao Cấp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        neon: {
+                            primary: '#36D96B',
+                            accent: '#2FB85C',
+                            dark: '#0E5B2A',
+                            muted: '#5F7268',
+                            glow: 'rgba(54, 217, 107, 0.15)',
+                            glowHeavy: 'rgba(54, 217, 107, 0.35)'
+                        },
+                        dark: {
+                            bg: '#050505',
+                            surface: '#0B0F0D',
+                            card: '#101614',
+                            border: 'rgba(255, 255, 255, 0.07)'
+                        },
+                        txt: {
+                            primary: '#F5F7F6',
+                            secondary: '#A9B5AF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Manrope', 'sans-serif'],
+                        display: ['Manrope', 'Inter', 'sans-serif']
+                    },
+                    borderRadius: {
+                        'card': '20px',
+                        'btn': '16px'
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(54, 217, 107, 0.25)',
+                        'neon-sm': '0 0 10px rgba(54, 217, 107, 0.2)',
+                        'card': '0 8px 30px rgba(0, 0, 0, 0.35)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #F5F7F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Football pitch grid + tech grid dynamic background */
+        .tech-pitch-bg {
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(54, 217, 107, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 10% 80%, rgba(14, 91, 42, 0.15) 0%, transparent 50%),
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+        }
+
+        .pitch-lines {
+            position: absolute;
+            inset: 0;
+            opacity: 0.12;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(54,217,107,0.3) 31%, transparent 32%);
+        }
+
+        .glass-card {
+            background: #101614;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+        }
+
+        .neon-border-glow {
+            border: 1px solid #36D96B;
+            box-shadow: 0 0 15px rgba(54, 217, 107, 0.25);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #101614;
+            border-radius: 4px;
+            border: 1px solid rgba(54, 217, 107, 0.2);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #36D96B;
+        }
+
+        /* Hide scrollbar for clean horizontal list on mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.03); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-20 md:pb-0 tech-pitch-bg">
+
+    <header class="sticky top-0 z-40 bg-[#050505]/90 backdrop-blur-md border-b border-dark-border transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo -->
+                <a href="#" onclick="showPage('home')" class="flex items-center gap-2.5 group">
+                    <div class="w-10 h-10 rounded-btn bg-gradient-to-br from-neon-primary to-neon-dark flex items-center justify-center text-black font-extrabold text-xl shadow-neon-sm group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display font-extrabold text-lg tracking-wider text-txt-primary flex items-center gap-1">
+                            NEXTECH <span class="w-2 h-2 rounded-full bg-neon-primary animate-pulse"></span>
+                        </span>
+                        <span class="text-[10px] text-neon-primary uppercase tracking-widest font-semibold -mt-1">eSports & Tech</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <button onclick="showPage('home')" id="nav-home" class="nav-link text-neon-primary hover:text-neon-primary transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-house text-xs"></i> Trang Chủ
+                    </button>
+                    <button onclick="showPage('articles')" id="nav-articles" class="nav-link text-txt-secondary hover:text-neon-primary transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-newspaper text-xs"></i> Bài Viết & Mod
+                    </button>
+                    <button onclick="scrollToSection('subscription-section')" class="text-txt-secondary hover:text-neon-primary transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-crown text-xs text-yellow-400"></i> Gói Subscription
+                    </button>
+                    <button onclick="scrollToSection('brand-section')" class="text-txt-secondary hover:text-neon-primary transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-xs"></i> Hệ Sinh Thái
+                    </button>
+                </nav>
+
+                <!-- Actions: Search & Quick Zalo -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openSearchModal()" class="w-10 h-10 rounded-btn bg-dark-card border border-dark-border flex items-center justify-center text-txt-secondary hover:text-neon-primary hover:border-neon-primary/40 transition-all" title="Tìm kiếm">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </button>
+                    <button onclick="openZaloModal()" class="hidden sm:flex items-center gap-2 px-4 h-10 rounded-btn bg-neon-primary/10 border border-neon-primary/40 text-neon-primary hover:bg-neon-primary hover:text-black font-semibold text-sm transition-all shadow-neon-sm">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        <span>Zalo Support</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="flex-grow">
+
+        <!-- ================= PAGE 1: HOME PAGE ================= -->
+        <div id="page-home" class="page-view space-y-16 md:space-y-24">
+
+            <section class="relative min-h-[78vh] md:min-h-[85vh] flex items-center justify-center pt-8 pb-12 overflow-hidden">
+                <!-- Pitch subtle background lines -->
+                <div class="pitch-lines"></div>
+                <div class="absolute top-1/4 right-0 w-72 h-72 bg-neon-primary/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+                <div class="absolute bottom-10 left-10 w-80 h-80 bg-neon-dark/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+                    <div class="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+                        
+                        <!-- Left Hero Content -->
+                        <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                            
+                            <!-- Badge -->
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-card border border-neon-primary/30 text-xs font-semibold text-neon-primary tracking-wide">
+                                <span class="w-2 h-2 rounded-full bg-neon-primary animate-ping"></span>
+                                TECH • MOD GAME • PREMIUM TOOLS
+                            </div>
+
+                            <!-- Main Headline -->
+                            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-tight sm:leading-tight lg:leading-none text-txt-primary">
+                                Kho <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-primary to-emerald-400">Công Nghệ</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-primary via-emerald-300 to-teal-200">Game Mod</span> Chất Lượng Cao
+                            </h1>
+
+                            <!-- Description -->
+                            <p class="text-base sm:text-lg text-txt-secondary max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                                Tổng hợp các tools, game mod, ứng dụng premium và tài nguyên công nghệ được cập nhật liên tục, tải nhanh qua các liên kết bên ngoài an toàn.
+                            </p>
+
+                            <!-- CTA Buttons -->
+                            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                                <button onclick="showPage('articles')" class="w-full sm:w-auto px-8 py-4 rounded-btn bg-neon-primary text-black font-bold text-base hover:bg-neon-accent transition-all duration-200 shadow-neon flex items-center justify-center gap-3 group">
+                                    <span>Khám phá bài viết</span>
+                                    <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                                <button onclick="openZaloModal()" class="w-full sm:w-auto px-8 py-4 rounded-btn bg-dark-card border border-dark-border hover:border-neon-primary/50 text-txt-primary font-semibold text-base transition-all flex items-center justify-center gap-3">
+                                    <i class="fa-solid fa-comments text-neon-primary"></i>
+                                    <span>Liên hệ Zalo</span>
+                                </button>
+                            </div>
+
+                            <!-- Trust Badges -->
+                            <div class="pt-6 grid grid-cols-3 gap-4 border-t border-dark-border max-w-lg mx-auto lg:mx-0 text-left">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-check text-neon-primary text-lg"></i>
+                                    <div class="text-xs">
+                                        <div class="font-bold text-txt-primary">100% An toàn</div>
+                                        <div class="text-txt-secondary">Quét Malware</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt text-neon-primary text-lg"></i>
+                                    <div class="text-xs">
+                                        <div class="font-bold text-txt-primary">Tốc độ cao</div>
+                                        <div class="text-txt-secondary">Server riêng</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-headset text-neon-primary text-lg"></i>
+                                    <div class="text-xs">
+                                        <div class="font-bold text-txt-primary">Hỗ trợ 24/7</div>
+                                        <div class="text-txt-secondary">Qua Zalo VIP</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Hero Visual: Smartphone Mockup with Neon Gaming / Football GUI -->
+                        <div class="lg:col-span-5 flex justify-center relative">
+                            <!-- Background Neon Halo -->
+                            <div class="absolute inset-0 bg-gradient-to-tr from-neon-primary/20 to-transparent rounded-full blur-2xl scale-90"></div>
+                            
+                            <!-- Phone Outline Frame -->
+                            <div class="relative w-[280px] sm:w-[320px] bg-[#0A0E0C] p-3 rounded-[38px] border-2 border-dark-border shadow-2xl shadow-neon-glow">
+                                <!-- Phone Screen Header -->
+                                <div class="w-full bg-[#121916] rounded-[28px] overflow-hidden border border-white/5 p-4 space-y-4">
+                                    <!-- Notch & Status Bar -->
+                                    <div class="flex justify-between items-center text-[10px] text-txt-secondary px-2">
+                                        <span class="font-semibold text-neon-primary">NEXTECH OS</span>
+                                        <div class="w-12 h-3 bg-black rounded-full"></div>
+                                        <div class="flex gap-1 items-center">
+                                            <i class="fa-solid fa-wifi"></i>
+                                            <i class="fa-solid fa-battery-full"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mockup Football Match & Tech Game Banner -->
+                                    <div class="relative h-36 rounded-2xl bg-gradient-to-r from-emerald-950 via-dark-card to-black p-3 flex flex-col justify-between overflow-hidden border border-neon-primary/30">
+                                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-neon-primary/20 rounded-full blur-lg"></div>
+                                        <div class="flex justify-between items-start z-10">
+                                            <span class="px-2 py-0.5 rounded-full bg-neon-primary text-black text-[10px] font-bold">HOT MOD</span>
+                                            <span class="text-[10px] text-emerald-400 font-mono">v4.8.2</span>
+                                        </div>
+                                        <div class="z-10">
+                                            <h4 class="font-bold text-sm text-white">eFootball 2026 MOD VIP</h4>
+                                            <p class="text-[10px] text-txt-secondary">Full Coin • Unlocked Menu • Graphics 60FPS</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mockup List Items inside Phone -->
+                                    <div class="space-y-2.5">
+                                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-dark-bg border border-dark-border">
+                                            <div class="w-9 h-9 rounded-lg bg-neon-primary/20 flex items-center justify-center text-neon-primary text-sm font-bold">
+                                                <i class="fa-solid fa-gamepad"></i>
+                                            </div>
+                                            <div class="flex-grow text-left">
+                                                <div class="text-xs font-bold text-txt-primary">FC Mobile 26 Menu</div>
+                                                <div class="text-[10px] text-txt-secondary">Auto Skill • Unlimited</div>
+                                            </div>
+                                            <span class="text-xs text-neon-primary"><i class="fa-solid fa-download"></i></span>
+                                        </div>
+
+                                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-dark-bg border border-dark-border">
+                                            <div class="w-9 h-9 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-sm font-bold">
+                                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                            </div>
+                                            <div class="flex-grow text-left">
+                                                <div class="text-xs font-bold text-txt-primary">AI Video Tool Pro</div>
+                                                <div class="text-[10px] text-txt-secondary">Unlocked All Features</div>
+                                            </div>
+                                            <span class="text-xs text-neon-primary"><i class="fa-solid fa-download"></i></span>
+                                        </div>
+
+                                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-dark-bg border border-dark-border">
+                                            <div class="w-9 h-9 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-400 text-sm font-bold">
+                                                <i class="fa-solid fa-shield-virus"></i>
+                                            </div>
+                                            <div class="flex-grow text-left">
+                                                <div class="text-xs font-bold text-txt-primary">VPN Ultra Speed</div>
+                                                <div class="text-[10px] text-txt-secondary">Ping 12ms • Game Only</div>
+                                            </div>
+                                            <span class="text-xs text-neon-primary"><i class="fa-solid fa-download"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="subscription-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                <!-- Header -->
+                <div class="text-center space-y-3 mb-10">
+                    <h2 class="text-2xl sm:text-4xl font-display font-extrabold text-txt-primary">
+                        Gói Dịch Vụ Chứng Chỉ <span class="text-neon-primary">iOS / iPadOS</span>
+                    </h2>
+                    <p class="text-sm sm:text-base text-txt-secondary max-w-xl mx-auto">
+                        Cung cấp File Chứng Chỉ (.p12, .mobileprovision) & Link cài App trực tiếp, nhân bản ứng dụng không giới hạn.
+                    </p>
+                </div>
+
+                <!-- Cards Grid: Mobile 1 column, Desktop 4 columns -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Card 1: Gói Nhân Phẩm 36k -->
+                    <div class="glass-card rounded-card p-6 flex flex-col justify-between hover:border-neon-primary/40 transition-all duration-300 relative group">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-btn bg-dark-bg border border-dark-border flex items-center justify-center text-neon-primary text-xl">
+                                <i class="fa-solid fa-dice text-neon-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-txt-primary">Gói Nhân Phẩm</h3>
+                                <p class="text-xs text-txt-secondary">Gói tiết kiệm, chờ lấy ngay hoặc 72h</p>
+                            </div>
+                            <div class="py-2 border-y border-dark-border">
+                                <span class="text-2xl font-extrabold text-neon-primary">36.000đ</span>
+                                <span class="text-xs text-txt-secondary"> / 01 thiết bị</span>
+                            </div>
+                            <ul class="space-y-2 text-xs text-txt-secondary">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-neon-primary"></i> Chỉ hỗ trợ iOS 16.0+</li>
+                                <li class="flex items-center gap-2 text-amber-400/90"><i class="fa-solid fa-clock"></i> Chờ 18-35 ngày nếu dính Blacklist</li>
+                                <li class="flex items-center gap-2 text-red-400"><i class="fa-solid fa-shield-xmark"></i> Không bảo hành</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neon-primary"></i> File Chứng Chỉ + Link Cài App</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neon-primary"></i> Hỗ trợ Ẩn iCloud & Bypass</li>
+                                <li class="flex items-center gap-2 text-txt-secondary/50"><i class="fa-solid fa-xmark text-red-400"></i> Không hỗ trợ JIT</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-neon-primary"></i> Nhân bản App không giới hạn</li>
+                            </ul>
+                        </div>
+                        <button onclick="openZaloModal('Gói iPhone/iPad Nhân Phẩm - 36k')" class="mt-6 w-full py-3 rounded-btn bg-dark-bg border border-dark-border hover:border-neon-primary hover:text-neon-primary text-txt-primary font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                            <span>Mua ngay qua Zalo</span>
+                            <i class="fa-solid fa-angle-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 2: Gói Lấy Ngay 50k -->
+                    <div class="glass-card rounded-card p-6 flex flex-col justify-between hover:border-neon-primary/40 transition-all duration-300 relative group">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-btn bg-dark-bg border border-dark-border flex items-center justify-center text-neon-primary text-xl">
+                                <i class="fa-solid fa-bolt text-neon-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-txt-primary">Gói Lấy Ngay</h3>
+                                <p class="text-xs text-txt-secondary">Sử dụng lập tức, hạn 12 tháng</p>
+                            </div>
+                            <div class="py-2 border-y border-dark-border">
+                                <span class="text-2xl font-extrabold text-neon-primary">50.000đ</span>
+                                <span class="text-xs text-txt-secondary"> / 12 tháng</span>
+                            </div>
+                            <ul class="space-y-2 text-xs text-txt-secondary">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-neon-primary"></i> Chỉ hỗ trợ iOS 16.0+</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-unlock-keyhole text-neon-primary"></i> Có hỗ trợ Unban Blacklist</li>
+                                <li class="flex items-center gap-2 text-red-400"><i class="fa-solid fa-shield-xmark"></i> Không bảo hành</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neon-primary"></i> File Chứng Chỉ + Link Cài App</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neon-primary"></i> Hỗ trợ Ẩn iCloud & Bypass</li>
+                                <li class="flex items-center gap-2 text-txt-secondary/50"><i class="fa-solid fa-xmark text-red-400"></i> Không hỗ trợ JIT</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-neon-primary"></i> Nhân bản App không giới hạn</li>
+                            </ul>
+                        </div>
+                        <button onclick="openZaloModal('Gói iPhone/iPad Lấy Ngay - 50k')" class="mt-6 w-full py-3 rounded-btn bg-dark-bg border border-dark-border hover:border-neon-primary hover:text-neon-primary text-txt-primary font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                            <span>Mua ngay qua Zalo</span>
+                            <i class="fa-solid fa-angle-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 3: Gói BH 40 Ngày 100k (POPULAR) -->
+                    <div class="glass-card rounded-card p-6 flex flex-col justify-between border-2 border-neon-primary shadow-neon relative transform md:-translate-y-2 bg-gradient-to-b from-[#101614] to-[#0d1f14]">
+                        <!-- Badge -->
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-neon-primary text-black text-xs font-black tracking-wider uppercase shadow-md">
+                            BẢO HÀNH 40 NGÀY
+                        </div>
+                        <div class="space-y-4 pt-2">
+                            <div class="w-12 h-12 rounded-btn bg-neon-primary/20 border border-neon-primary flex items-center justify-center text-neon-primary text-xl">
+                                <i class="fa-solid fa-shield-halved text-neon-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-txt-primary">VIP Lấy Ngay 40D</h3>
+                                <p class="text-xs text-txt-secondary">Full tính năng, hỗ trợ mọi iOS</p>
+                            </div>
+                            <div class="py-2 border-y border-neon-primary/30">
+                                <span class="text-2xl font-extrabold text-neon-primary">100.000đ</span>
+                                <span class="text-xs text-txt-secondary"> / 12 tháng</span>
+                            </div>
+                            <ul class="space-y-2 text-xs text-txt-primary">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-neon-primary"></i> Hỗ trợ MỌI phiên bản iOS</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-shield-check text-neon-primary"></i> Bảo hành 40 ngày 1 đổi 1</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-unlock-keyhole text-neon-primary"></i> Unban Xoá bỏ Blacklist</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-laptop-code text-neon-primary"></i> Hỗ trợ JIT (Yêu cầu PC/Mac)</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neon-primary"></i> Hỗ trợ Ẩn iCloud & Bypass</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-neon-primary"></i> Nhân bản App không giới hạn</li>
+                            </ul>
+                        </div>
+                        <button onclick="openZaloModal('Gói Lấy Ngay BH 40 Ngày - 100k')" class="mt-6 w-full py-3 rounded-btn bg-neon-primary text-black font-bold text-sm hover:bg-neon-accent transition-all shadow-neon-sm flex items-center justify-center gap-2">
+                            <span>Mua ngay qua Zalo</span>
+                            <i class="fa-solid fa-bolt text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 4: Gói BH 300 Ngày 150k -->
+                    <div class="glass-card rounded-card p-6 flex flex-col justify-between hover:border-neon-primary/40 transition-all duration-300 relative group">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-btn bg-dark-bg border border-dark-border flex items-center justify-center text-yellow-400 text-xl">
+                                <i class="fa-solid fa-crown text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-txt-primary">VIP Premium 300D</h3>
+                                <p class="text-xs text-txt-secondary">Bảo hành 300 ngày siêu an tâm</p>
+                            </div>
+                            <div class="py-2 border-y border-dark-border">
+                                <span class="text-2xl font-extrabold text-neon-primary">150.000đ</span>
+                                <span class="text-xs text-txt-secondary"> / 12 tháng</span>
+                            </div>
+                            <ul class="space-y-2 text-xs text-txt-secondary">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-neon-primary"></i> Hỗ trợ MỌI phiên bản iOS</li>
+                                <li class="flex items-center gap-2 text-yellow-400"><i class="fa-solid fa-award"></i> Bảo hành 300 ngày siêu dài</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-unlock-keyhole text-neon-primary"></i> Unban Xoá bỏ Blacklist</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-laptop-code text-neon-primary"></i> Hỗ trợ JIT (Yêu cầu PC/Mac)</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neon-primary"></i> Hỗ trợ Ẩn iCloud & Bypass</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-copy text-neon-primary"></i> Nhân bản App không giới hạn</li>
+                            </ul>
+                        </div>
+                        <button onclick="openZaloModal('Gói Premium BH 300 Ngày - 150k')" class="mt-6 w-full py-3 rounded-btn bg-dark-bg border border-dark-border hover:border-neon-primary hover:text-neon-primary text-txt-primary font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                            <span>Mua ngay qua Zalo</span>
+                            <i class="fa-solid fa-angle-right text-xs"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-txt-primary">
+                            Bài Viết <span class="text-neon-primary">Nổi Bật</span>
+                        </h2>
+                        <p class="text-sm text-txt-secondary">Cập nhật ứng dụng, game mod & thủ thuật mới nhất</p>
+                    </div>
+                    <button onclick="showPage('articles')" class="text-sm font-semibold text-neon-primary hover:underline flex items-center gap-1">
+                        Xem tất cả bài viết <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Featured Grid: Mobile 2 columns, Desktop 3 columns -->
+                <div id="featured-posts-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
+                    <!-- Dynamic rendering via JS for scalability -->
+                </div>
+            </section>
+
+            <section id="brand-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-[24px] p-6 sm:p-10 border border-neon-primary/20 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-neon-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="grid lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-8 space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-btn bg-neon-primary flex items-center justify-center text-black font-extrabold text-2xl">
+                                    <i class="fa-solid fa-cubes"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl sm:text-2xl font-bold text-txt-primary">Hệ Sinh Thái NEXTECH Media</h3>
+                                    <p class="text-xs text-neon-primary font-semibold">CÔNG NGHỆ • GAMING • GIẢI TRÍ SỐ</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-txt-secondary leading-relaxed">
+                                NexTech là nền tảng hàng đầu chia sẻ các giải pháp công nghệ, ứng dụng di động tối ưu, mod game bóng đá eSports đỉnh cao và tiện ích số cao cấp. Chúng tôi tập trung vào trải nghiệm mượt mà, link tải an toàn tuyệt đối và sự hỗ trợ tận tâm dành cho cộng đồng.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border text-xs text-txt-secondary">🎮 eFootball MOD</span>
+                                <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border text-xs text-txt-secondary">⚽ FC Mobile Patch</span>
+                                <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border text-xs text-txt-secondary">🤖 Android Premium Apps</span>
+                                <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border text-xs text-txt-secondary">⚡ Utilities Pro</span>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-4 flex flex-col items-center justify-center p-6 bg-dark-bg/60 rounded-card border border-dark-border text-center space-y-4">
+                            <i class="fa-solid fa-headset text-4xl text-neon-primary"></i>
+                            <div>
+                                <h4 class="font-bold text-txt-primary text-base">Cần Tư Vấn Riêng?</h4>
+                                <p class="text-xs text-txt-secondary">Hỗ trợ cài đặt & hỏi đáp dịch vụ 24/7</p>
+                            </div>
+                            <button onclick="openZaloModal()" class="w-full py-3 rounded-btn bg-neon-primary text-black font-bold text-sm hover:bg-neon-accent transition-all shadow-neon-sm flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-comment-dots"></i>
+                                <span>Liên Hệ Tư Vấn Qua Zalo</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+        <!-- ================= PAGE 2: POST LISTING PAGE ================= -->
+        <div id="page-articles" class="page-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            
+            <!-- Category Filter Header -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-display font-extrabold text-txt-primary">
+                            Kho <span class="text-neon-primary">Bài Viết & Mod Games</span>
+                        </h1>
+                        <p class="text-sm text-txt-secondary">Tìm kiếm công cụ và bản mod bạn cần</p>
+                    </div>
+
+                    <!-- Search Input Filter -->
+                    <div class="relative w-full sm:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-txt-secondary text-sm"></i>
+                        <input type="text" id="filter-search-input" onkeyup="handleArticleSearch()" placeholder="Tìm theo tên bài viết..." class="w-full bg-dark-card border border-dark-border rounded-btn pl-10 pr-4 py-2.5 text-sm text-txt-primary focus:outline-none focus:border-neon-primary transition-all">
+                    </div>
+                </div>
+
+                <!-- Horizontal Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 text-xs font-medium">
+                    <button onclick="filterCategory('all')" class="cat-pill active px-4 py-2 rounded-full bg-neon-primary text-black font-bold whitespace-nowrap">Tất Cả</button>
+                    <button onclick="filterCategory('Game Mod')" class="cat-pill px-4 py-2 rounded-full bg-dark-card border border-dark-border text-txt-secondary hover:text-txt-primary whitespace-nowrap">Game Mod</button>
+                    <button onclick="filterCategory('Premium Tools')" class="cat-pill px-4 py-2 rounded-full bg-dark-card border border-dark-border text-txt-secondary hover:text-txt-primary whitespace-nowrap">Premium Tools</button>
+                    <button onclick="filterCategory('App iOS/Android')" class="cat-pill px-4 py-2 rounded-full bg-dark-card border border-dark-border text-txt-secondary hover:text-txt-primary whitespace-nowrap">App Mobile</button>
+                    <button onclick="filterCategory('Thủ Thuật')" class="cat-pill px-4 py-2 rounded-full bg-dark-card border border-dark-border text-txt-secondary hover:text-txt-primary whitespace-nowrap">Thủ Thuật</button>
+                </div>
+            </div>
+
+            <!-- Articles Grid: Mobile 2, Tablet 3, Desktop 4 -->
+            <div id="articles-list-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6">
+                <!-- Populated via JS -->
+            </div>
+
+            <div class="flex items-center justify-center gap-2 pt-6">
+                <button class="w-10 h-10 rounded-btn bg-dark-card border border-dark-border text-txt-secondary hover:text-neon-primary flex items-center justify-center transition-all disabled:opacity-50">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button class="w-10 h-10 rounded-btn bg-neon-primary text-black font-bold flex items-center justify-center shadow-neon-sm">1</button>
+                <button class="w-10 h-10 rounded-btn bg-dark-card border border-dark-border text-txt-secondary hover:border-neon-primary/40 hover:text-txt-primary flex items-center justify-center transition-all">2</button>
+                <button class="w-10 h-10 rounded-btn bg-dark-card border border-dark-border text-txt-secondary hover:border-neon-primary/40 hover:text-txt-primary flex items-center justify-center transition-all">3</button>
+                <button class="w-10 h-10 rounded-btn bg-dark-card border border-dark-border text-txt-secondary hover:text-neon-primary flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- ================= PAGE 3: POST DETAIL PAGE ================= -->
+        <div id="page-detail" class="page-view hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center gap-2 text-xs text-txt-secondary">
+                <a href="#" onclick="showPage('home')" class="hover:text-neon-primary">Trang chủ</a>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <a href="#" onclick="showPage('articles')" class="hover:text-neon-primary" id="detail-breadcrumb-cat">Game Mod</a>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                <span class="text-txt-primary font-medium truncate max-w-[200px]" id="detail-breadcrumb-title">eFootball 2026 Mod VIP</span>
+            </nav>
+
+            <!-- Article Header -->
+            <header class="space-y-4">
+                <span id="detail-category-badge" class="inline-block px-3 py-1 rounded-full bg-neon-primary/10 border border-neon-primary/30 text-neon-primary text-xs font-bold uppercase tracking-wider">
+                    Game Mod
+                </span>
+
+                <h1 id="detail-title" class="text-2xl sm:text-4xl font-display font-extrabold text-txt-primary leading-tight">
+                    Tải eFootball 2026 Mod VIP Menu: Full Coins, Unlock 60FPS & Đồ Họa Đỉnh Cao
+                </h1>
+
+                <!-- Meta Info -->
+                <div class="flex flex-wrap items-center gap-4 text-xs text-txt-secondary border-b border-dark-border pb-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 rounded-full bg-neon-primary/20 flex items-center justify-center text-neon-primary font-bold text-[10px]">NT</div>
+                        <span class="text-txt-primary font-medium" id="detail-author">Admin Tech</span>
+                    </div>
+                    <span>•</span>
+                    <span><i class="fa-regular fa-calendar me-1"></i> <span id="detail-date">05/08/2026</span></span>
+                    <span>•</span>
+                    <span><i class="fa-regular fa-clock me-1"></i> 5 phút đọc</span>
+                    <span>•</span>
+                    <span><i class="fa-regular fa-eye me-1"></i> <span id="detail-views">12,450</span> lượt xem</span>
+                </div>
+            </header>
+
+            <!-- Cover Image -->
+            <div class="rounded-card overflow-hidden border border-dark-border shadow-2xl relative max-h-[420px]">
+                <img id="detail-cover" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80" alt="Cover Image" class="w-full h-full object-cover">
+            </div>
+
+            <article class="prose prose-invert max-w-none text-txt-primary space-y-6 text-[16.5px] leading-relaxed">
+                
+                <p class="text-lg font-medium text-txt-primary/90 leading-relaxed border-l-4 border-neon-primary pl-4 py-1">
+                    Bản cập nhật eFootball 2026 mới nhất mang đến cho người chơi trải nghiệm bóng đá chân thực vượt trội. Với bản Mod VIP Menu được biên dịch riêng bởi NexTech, bạn sẽ sở hữu ngay toàn bộ tính năng cao cấp không cần root máy.
+                </p>
+
+                <h2 class="text-xl sm:text-2xl font-bold text-txt-primary pt-4 border-b border-dark-border pb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-star text-neon-primary text-base"></i> Các Tính Năng Nổi Bật Trong Bản Mod
+                </h2>
+
+                <ul class="space-y-2 list-none pl-0">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-neon-primary mt-1"></i>
+                        <span><strong>Unlock Full GP & Coins:</strong> Mua sắm cầu thủ huyền thoại không giới hạn ngân sách.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-neon-primary mt-1"></i>
+                        <span><strong>Smart Auto Play AI:</strong> Tự động thi đấu sự kiện kiếm quà siêu nhanh.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-neon-primary mt-1"></i>
+                        <span><strong>Graphics Config 60/120 FPS:</strong> Mượt mà trên cả các thiết bị Android tầm trung.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-check text-neon-primary mt-1"></i>
+                        <span><strong>Bảo vệ Anti-Ban:</strong> Mã hóa ID thiết bị, an toàn tuyệt đối khi chơi Online.</span>
+                    </li>
+                </ul>
+
+                <!-- Highlight Code Block -->
+                <div class="space-y-2 pt-2">
+                    <span class="text-xs font-mono text-neon-primary font-semibold">Ghi chú cấu hình yêu cầu (Android/PC):</span>
+                    <div class="bg-[#080d0a] p-4 rounded-btn border border-dark-border font-mono text-xs text-emerald-300 overflow-x-auto space-y-1">
+                        <div>// Cấu hình tối thiểu:</div>
+                        <div>OS: Android 9.0 trở lên hoặc Emulator (Bluestacks 5 / LDPlayer)</div>
+                        <div>RAM: Minimal 4GB RAM</div>
+                        <div>Storage: 3.5GB dung lượng trống</div>
+                    </div>
+                </div>
+
+                <!-- Dark Glass Quote Box -->
+                <blockquote class="p-4 rounded-card bg-dark-card border border-neon-primary/30 text-txt-secondary text-sm italic">
+                    "Lưu ý: Luôn gỡ bỏ bản game cũ trước khi tiến hành cài đặt file APK Mod để tránh xung đột dữ liệu."
+                </blockquote>
+
+                <!-- Responsive Tech Info Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                            <tr class="bg-dark-card border-b border-dark-border text-neon-primary">
+                                <th class="p-3">Thông Số</th>
+                                <th class="p-3">Chi Tiết Thông Tin</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-dark-border text-txt-secondary">
+                            <tr>
+                                <td class="p-3 font-semibold text-txt-primary">Tên Ứng Dụng</td>
+                                <td class="p-3">eFootball™ 2026 Mobile Mod VIP</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-txt-primary">Phiên Bản</td>
+                                <td class="p-3">v4.8.2 (Latest Build)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-txt-primary">Dung Lượng</td>
+                                <td class="p-3">2.4 GB (APK + OBB)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-txt-primary">Nhà Phát Hành</td>
+                                <td class="p-3">KONAMI / Modded by NexTech</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+            <section id="download-section" class="pt-6">
+                <div class="glass-card rounded-[24px] p-6 sm:p-8 border-2 border-neon-primary/40 shadow-neon space-y-6">
+                    
+                    <div class="flex items-center gap-3 border-b border-dark-border pb-4">
+                        <div class="w-10 h-10 rounded-btn bg-neon-primary text-black flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-txt-primary">Liên Kết Tải Xuống Chi Tiết</h3>
+                            <p class="text-xs text-neon-primary font-medium">Link đã được kiểm duyệt an toàn 100%</p>
+                        </div>
+                    </div>
+
+                    <!-- Download Buttons Stack -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <button onclick="handleDownload('Tải APK Android Full (Original)')" class="w-full h-12 rounded-btn bg-neon-primary text-black font-bold text-sm hover:bg-neon-accent transition-all shadow-neon-sm flex items-center justify-between px-5 group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-brands fa-android text-base"></i>
+                                <span>Tải APK Android Original</span>
+                            </span>
+                            <i class="fa-solid fa-arrow-down-long group-hover:translate-y-0.5 transition-transform"></i>
+                        </button>
+
+                        <button onclick="handleDownload('Tải Bản MOD Premium VIP')" class="w-full h-12 rounded-btn bg-neon-primary text-black font-bold text-sm hover:bg-neon-accent transition-all shadow-neon-sm flex items-center justify-between px-5 group">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
+                                <span>Tải Bản MOD Premium VIP</span>
+                            </span>
+                            <i class="fa-solid fa-arrow-down-long group-hover:translate-y-0.5 transition-transform"></i>
+                        </button>
+
+                        <button onclick="handleDownload('Link Google Drive')" class="w-full h-12 rounded-btn bg-dark-bg border border-neon-primary/40 hover:bg-neon-primary/10 text-txt-primary hover:text-neon-primary font-semibold text-sm transition-all flex items-center justify-between px-5">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-brands fa-google-drive text-emerald-400 text-base"></i>
+                                <span>Link Google Drive Tốc Độ Cao</span>
+                            </span>
+                            <i class="fa-solid fa-download text-xs"></i>
+                        </button>
+
+                        <button onclick="handleDownload('Link MediaFire Dự Phòng')" class="w-full h-12 rounded-btn bg-dark-bg border border-neon-primary/40 hover:bg-neon-primary/10 text-txt-primary hover:text-neon-primary font-semibold text-sm transition-all flex items-center justify-between px-5">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-fire text-amber-400 text-base"></i>
+                                <span>Link MediaFire Dự Phòng</span>
+                            </span>
+                            <i class="fa-solid fa-download text-xs"></i>
+                        </button>
+                    </div>
+
+                    <div class="text-center pt-2">
+                        <p class="text-xs text-txt-secondary">
+                            Gặp sự cố link tải? <button onclick="openZaloModal('Báo lỗi link tải')" class="text-neon-primary font-semibold underline">Báo lỗi cho Admin qua Zalo</button>
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="space-y-6 pt-6 border-t border-dark-border">
+                <h3 class="text-xl font-bold text-txt-primary flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-neon-primary"></i> Bài Viết Liên Quan
+                </h3>
+
+                <div id="related-posts-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                    <!-- Dynamic rendering -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-dark-surface border-t border-dark-border py-10 mt-16 text-xs text-txt-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <!-- Col 1: Brand -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-btn bg-neon-primary flex items-center justify-center text-black font-extrabold text-base">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <span class="font-display font-bold text-base text-txt-primary">NEXTECH</span>
+                    </div>
+                    <p class="text-txt-secondary leading-relaxed">
+                        Chuyên trang tổng hợp tools công nghệ, game mod uy tín, liên kết tải an toàn dành cho cộng đồng.
+                    </p>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-txt-primary text-sm">Liên Kết Nhanh</h4>
+                    <ul class="space-y-1.5">
+                        <li><a href="#" onclick="showPage('home')" class="hover:text-neon-primary">Trang chủ</a></li>
+                        <li><a href="#" onclick="showPage('articles')" class="hover:text-neon-primary">Danh sách bài viết</a></li>
+                        <li><a href="#" onclick="scrollToSection('subscription-section')" class="hover:text-neon-primary">Gói Subscription VIP</a></li>
+                        <li><a href="#" onclick="scrollToSection('brand-section')" class="hover:text-neon-primary">Giới thiệu hệ sinh thái</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Policy -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-txt-primary text-sm">Chính Sách & Điều Khoản</h4>
+                    <ul class="space-y-1.5">
+                        <li><a href="#" class="hover:text-neon-primary">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="hover:text-neon-primary">Chính sách bảo mật</a></li>
+                        <li><a href="#" class="hover:text-neon-primary">Miễn trừ trách nhiệm link ngoài</a></li>
+                        <li><a href="#" class="hover:text-neon-primary">Báo cáo bản quyền (DMCA)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Community -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-txt-primary text-sm">Kênh Trực Tuyến</h4>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openZaloModal()" class="w-9 h-9 rounded-btn bg-dark-card border border-dark-border flex items-center justify-center text-neon-primary hover:bg-neon-primary hover:text-black transition-all" title="Zalo">
+                            <i class="fa-solid fa-comment"></i>
+                        </button>
+                        <a href="#" class="w-9 h-9 rounded-btn bg-dark-card border border-dark-border flex items-center justify-center text-blue-400 hover:bg-blue-500 hover:text-white transition-all" title="Telegram">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-btn bg-dark-card border border-dark-border flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all" title="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-6 border-t border-dark-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px]">
+                <p>© 2026 NexTech Media. Tất cả quyền được bảo lưu.</p>
+                <p class="text-neon-primary font-mono">Designed with Mobile-First Football Neon Style</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#050505]/95 backdrop-blur-lg border-t border-dark-border px-3 py-2 flex items-center justify-around">
+        
+        <button onclick="showPage('home')" id="mob-nav-home" class="mob-nav-btn flex flex-col items-center gap-1 text-neon-primary">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px] font-medium">Trang chủ</span>
+        </button>
+
+        <button onclick="showPage('articles')" id="mob-nav-articles" class="mob-nav-btn flex flex-col items-center gap-1 text-txt-secondary hover:text-neon-primary">
+            <i class="fa-solid fa-newspaper text-lg"></i>
+            <span class="text-[10px] font-medium">Bài viết</span>
+        </button>
+
+        <button onclick="scrollToSection('featured-posts-grid')" class="mob-nav-btn flex flex-col items-center gap-1 text-txt-secondary hover:text-neon-primary">
+            <i class="fa-solid fa-fire text-lg"></i>
+            <span class="text-[10px] font-medium">Nổi bật</span>
+        </button>
+
+        <button onclick="scrollToSection('subscription-section')" class="mob-nav-btn flex flex-col items-center gap-1 text-txt-secondary hover:text-neon-primary">
+            <i class="fa-solid fa-crown text-lg text-yellow-400"></i>
+            <span class="text-[10px] font-medium">Gói VIP</span>
+        </button>
+
+        <!-- Prominent Zalo Button in Bottom Bar -->
+        <button onclick="openZaloModal()" class="flex flex-col items-center justify-center w-11 h-11 rounded-full bg-neon-primary text-black font-bold shadow-neon">
+            <i class="fa-solid fa-comments text-lg"></i>
+        </button>
+
+    </div>
+
+    <!-- Zalo Modal -->
+    <div id="zalo-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-[24px] max-w-sm w-full p-6 space-y-5 border border-neon-primary/40 relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeZaloModal()" class="absolute top-4 right-4 text-txt-secondary hover:text-txt-primary">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-full bg-neon-primary/20 border border-neon-primary flex items-center justify-center mx-auto text-neon-primary text-2xl">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                <h3 class="text-xl font-bold text-txt-primary">Tư Vấn Trực Tiếp Zalo</h3>
+                <p class="text-xs text-txt-secondary" id="zalo-modal-package">Hỗ trợ kích hoạt gói VIP & Giải đáp kĩ thuật</p>
+            </div>
+
+            <div class="p-4 rounded-btn bg-dark-bg border border-dark-border text-center space-y-1">
+                <span class="text-[11px] text-txt-secondary uppercase tracking-wider">Số Điện Thoại Zalo Official</span>
+                <div class="text-lg font-mono font-extrabold text-neon-primary tracking-wider">0988.789.XXX</div>
+            </div>
+
+            <div class="space-y-2">
+                <a href="https://zalo.me" target="_blank" onclick="closeZaloModal()" class="w-full py-3.5 rounded-btn bg-neon-primary text-black font-bold text-sm hover:bg-neon-accent transition-all shadow-neon flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Mở Ứng Dụng Zalo Ngay</span>
+                </a>
+                <button onclick="copyZaloNumber()" class="w-full py-3 rounded-btn bg-dark-bg border border-dark-border text-xs text-txt-primary hover:border-neon-primary/40 transition-all">
+                    Sao chép số điện thoại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-start justify-center pt-20 p-4">
+        <div class="glass-card rounded-card max-w-xl w-full p-4 space-y-4 border border-dark-border">
+            <div class="flex items-center gap-3 border-b border-dark-border pb-3">
+                <i class="fa-solid fa-magnifying-glass text-neon-primary"></i>
+                <input type="text" id="modal-search-input" onkeyup="handleModalSearch()" placeholder="Nhập tên ứng dụng, game mod..." class="bg-transparent text-sm text-txt-primary w-full focus:outline-none">
+                <button onclick="closeSearchModal()" class="text-xs text-txt-secondary hover:text-txt-primary">ESC</button>
+            </div>
+            <div id="modal-search-results" class="max-h-60 overflow-y-auto space-y-2 text-xs">
+                <p class="text-txt-secondary text-center py-4">Nhập từ khóa để bắt đầu tìm kiếm...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Notification Toast -->
+    <div id="toast-notify" class="fixed top-20 right-4 z-50 bg-dark-card border border-neon-primary text-txt-primary px-4 py-3 rounded-btn shadow-neon hidden flex items-center gap-3 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-neon-primary text-lg"></i>
+        <div>
+            <div class="text-xs font-bold" id="toast-title">Đang chuyển hướng...</div>
+            <div class="text-[10px] text-txt-secondary" id="toast-desc">Chuẩn bị liên kết tải xuống an toàn</div>
+        </div>
+    </div>
+
+
+    <script>
+        // Article Data Repository
+        const sampleArticles = [
+            {
+                id: '1',
+                title: 'eFootball 2026 Mod VIP Menu: Unlock Full Coins & 60FPS Graphic',
+                category: 'Game Mod',
+                excerpt: 'Bản cập nhật eFootball 2026 Mobile mới nhất unlock full coin, mở khóa cấu hình đồ họa 120 FPS mượt mà.',
+                date: '05/08/2026',
+                views: '12.450',
+                author: 'Admin Tech',
+                image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '2',
+                title: 'FC Mobile 26 Mod Menu: Auto Skill & Unlimited Money Build',
+                category: 'Game Mod',
+                excerpt: 'Tải ngay bản mod FC Mobile 2026 tính năng tự động đá giải, unlimited gems cho Android không root.',
+                date: '04/08/2026',
+                views: '9.820',
+                author: 'Pro Gamer',
+                image: 'https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '3',
+                title: 'AI Video Editor Pro 2026: Mở Khóa Tất Cả Tính Năng Export 4K',
+                category: 'Premium Tools',
+                excerpt: 'Công cụ làm video AI tự động tạo phụ đề, làm nét video cực đỉnh không dính watermark.',
+                date: '03/08/2026',
+                views: '15.100',
+                author: 'Editor Pro',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '4',
+                title: 'VPN Gaming Speed Optimizer: Giảm Ping Đá Online Cực Nhẹ',
+                category: 'App iOS/Android',
+                excerpt: 'Ứng dụng tăng tốc mạng định tuyến server game đá bóng online chỉ với 1 chạm duy nhất.',
+                date: '02/08/2026',
+                views: '6.400',
+                author: 'Net Master',
+                image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '5',
+                title: 'Thủ Thuật Tối Ưu Cấu Hình Android Chơi Game Nặng 120Hz',
+                category: 'Thủ Thuật',
+                excerpt: 'Hướng dẫn tinh chỉnh Developer Option và tản nhiệt phần mềm cho smartphone Android.',
+                date: '01/08/2026',
+                views: '18.900',
+                author: 'Tech Guide',
+                image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '6',
+                title: 'Spotify Premium APK 2026: Nghe Nhạc Không Quảng Cáo Offline',
+                category: 'App iOS/Android',
+                excerpt: 'Tải Spotify Mod nghe nhạc chất lượng 320kbps, tải nhạc không giới hạn hoàn toàn miễn phí.',
+                date: '31/07/2026',
+                views: '22.300',
+                author: 'Music Mod',
+                image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '7',
+                title: 'Dream League Soccer 2026 Mod Gold & Coins Full Kit V-League',
+                category: 'Game Mod',
+                excerpt: 'Bản DLS 2026 mở khóa bộ áo đấu V-League ĐT Việt Nam cùng chỉ số cầu thủ max 100.',
+                date: '30/07/2026',
+                views: '11.150',
+                author: 'Modder VN',
+                image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '8',
+                title: 'Tool Tự Động Hóa Auto Clicker Pro Cho Android Không Cần Root',
+                category: 'Premium Tools',
+                excerpt: 'Hỗ trợ tạo kịch bản tap tự động linh hoạt cho các tựa game cày cuộn sự kiện.',
+                date: '29/07/2026',
+                views: '5.600',
+                author: 'Automation',
+                image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: '9',
+                title: 'Canva Pro Edu 2026: Hướng Dẫn Kích Hoạt Tài Khoản Vĩnh Viễn',
+                category: 'Thủ Thuật',
+                excerpt: 'Chia sẻ mẹo tham gia lớp học Canva Pro để sử dụng full font chữ, kho ảnh bản quyền.',
+                date: '28/07/2026',
+                views: '31.200',
+                author: 'Design Free',
+                image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80'
+            }
+        ];
+
+        let currentActiveArticle = sampleArticles[0];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFeaturedPosts();
+            renderAllArticles(sampleArticles);
+            renderRelatedPosts();
+        });
+
+        // Render Featured Posts (Home page)
+        function renderFeaturedPosts() {
+            const container = document.getElementById('featured-posts-grid');
+            container.innerHTML = sampleArticles.slice(0, 9).map(post => `
+                <div onclick="openArticleDetail('${post.id}')" class="glass-card rounded-card overflow-hidden cursor-pointer hover:-translate-y-1 hover:border-neon-primary/50 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <!-- Thumbnail aspect 4:5 mobile friendly -->
+                        <div class="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden bg-dark-bg">
+                            <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-neon-primary/30 text-neon-primary text-[10px] font-bold">
+                                ${post.category}
+                            </span>
+                        </div>
+                        <div class="p-3 sm:p-4 space-y-2">
+                            <h3 class="font-bold text-xs sm:text-sm text-txt-primary line-clamp-2 group-hover:text-neon-primary transition-colors">
+                                ${post.title}
+                            </h3>
+                            <p class="text-[11px] sm:text-xs text-txt-secondary line-clamp-2 leading-relaxed">
+                                ${post.excerpt}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-3 sm:p-4 pt-0 flex justify-between items-center text-[10px] text-txt-secondary border-t border-white/5">
+                        <span><i class="fa-regular fa-calendar me-1"></i> ${post.date}</span>
+                        <span><i class="fa-regular fa-eye me-1"></i> ${post.views}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render All Articles List (Blog page)
+        function renderAllArticles(articles) {
+            const container = document.getElementById('articles-list-grid');
+            if(articles.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 text-txt-secondary text-sm">Không tìm thấy bài viết phù hợp.</div>`;
+                return;
+            }
+            container.innerHTML = articles.map(post => `
+                <div onclick="openArticleDetail('${post.id}')" class="glass-card rounded-card overflow-hidden cursor-pointer hover:border-neon-primary/50 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative aspect-[4/3] overflow-hidden bg-dark-bg">
+                            <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/70 border border-neon-primary/30 text-neon-primary text-[10px] font-bold">
+                                ${post.category}
+                            </span>
+                        </div>
+                        <div class="p-3 space-y-1.5">
+                            <h3 class="font-bold text-xs text-txt-primary line-clamp-2 group-hover:text-neon-primary transition-colors">
+                                ${post.title}
+                            </h3>
+                            <p class="text-[10px] text-txt-secondary line-clamp-2">
+                                ${post.excerpt}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-3 pt-0 flex justify-between items-center text-[10px] text-txt-secondary">
+                        <span>${post.date}</span>
+                        <span class="text-neon-primary font-semibold flex items-center gap-1">Xem <i class="fa-solid fa-angle-right text-[8px]"></i></span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Related Posts (Detail page)
+        function renderRelatedPosts() {
+            const container = document.getElementById('related-posts-grid');
+            container.innerHTML = sampleArticles.slice(1, 5).map(post => `
+                <div onclick="openArticleDetail('${post.id}')" class="glass-card rounded-card overflow-hidden cursor-pointer hover:border-neon-primary/50 transition-all p-2.5 flex flex-col justify-between group">
+                    <div class="space-y-2">
+                        <img src="${post.image}" alt="${post.title}" class="w-full h-24 object-cover rounded-lg">
+                        <h4 class="font-bold text-xs text-txt-primary line-clamp-2 group-hover:text-neon-primary transition-colors">
+                            ${post.title}
+                        </h4>
+                    </div>
+                    <div class="mt-2 text-[10px] text-neon-primary font-semibold">Tải ngay →</div>
+                </div>
+            `).join('');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if(targetPage) {
+                targetPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update Header Nav Active state
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('text-neon-primary'));
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if(activeNav) activeNav.classList.add('text-neon-primary');
+
+            // Update Mobile Bottom Nav State
+            document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('text-neon-primary'));
+            const activeMobNav = document.getElementById(`mob-nav-${pageId}`);
+            if(activeMobNav) activeMobNav.classList.add('text-neon-primary');
+        }
+
+        function openArticleDetail(articleId) {
+            const post = sampleArticles.find(a => a.id === articleId) || sampleArticles[0];
+            currentActiveArticle = post;
+
+            // Populate Post Detail UI
+            document.getElementById('detail-breadcrumb-cat').innerText = post.category;
+            document.getElementById('detail-breadcrumb-title').innerText = post.title;
+            document.getElementById('detail-category-badge').innerText = post.category;
+            document.getElementById('detail-title').innerText = post.title;
+            document.getElementById('detail-author').innerText = post.author;
+            document.getElementById('detail-date').innerText = post.date;
+            document.getElementById('detail-views').innerText = post.views;
+            document.getElementById('detail-cover').src = post.image;
+
+            showPage('detail');
+        }
+
+        function scrollToSection(sectionId) {
+            showPage('home');
+            setTimeout(() => {
+                const el = document.getElementById(sectionId);
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                btn.classList.remove('bg-neon-primary', 'text-black', 'font-bold');
+                btn.classList.add('bg-dark-card', 'text-txt-secondary', 'border', 'border-dark-border');
+            });
+            event.target.classList.remove('bg-dark-card', 'text-txt-secondary', 'border', 'border-dark-border');
+            event.target.classList.add('bg-neon-primary', 'text-black', 'font-bold');
+
+            if (cat === 'all') {
+                renderAllArticles(sampleArticles);
+            } else {
+                const filtered = sampleArticles.filter(a => a.category === cat);
+                renderAllArticles(filtered);
+            }
+        }
+
+        function handleArticleSearch() {
+            const query = document.getElementById('filter-search-input').value.toLowerCase();
+            const filtered = sampleArticles.filter(a => 
+                a.title.toLowerCase().includes(query) || 
+                a.excerpt.toLowerCase().includes(query)
+            );
+            renderAllArticles(filtered);
+        }
+
+        function openZaloModal(packageName = '') {
+            const pkgLabel = document.getElementById('zalo-modal-package');
+            if(packageName) {
+                pkgLabel.innerText = `Đang đăng ký: Gói ${packageName}`;
+            } else {
+                pkgLabel.innerText = `Hỗ trợ kích hoạt gói VIP & Giải đáp kĩ thuật`;
+            }
+            document.getElementById('zalo-modal').classList.remove('hidden');
+        }
+
+        function closeZaloModal() {
+            document.getElementById('zalo-modal').classList.add('hidden');
+        }
+
+        function copyZaloNumber() {
+            const el = document.createElement('textarea');
+            el.value = '0988789XXX';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            showToast('Đã sao chép SĐT Zalo!', 'Bạn có thể mở Zalo và dán số điện thoại.');
+        }
+
+        function openSearchModal() {
+            document.getElementById('search-modal').classList.remove('hidden');
+            document.getElementById('modal-search-input').focus();
+        }
+
+        function closeSearchModal() {
+            document.getElementById('search-modal').classList.add('hidden');
+        }
+
+        function handleModalSearch() {
+            const query = document.getElementById('modal-search-input').value.toLowerCase();
+            const resultsContainer = document.getElementById('modal-search-results');
+            
+            if(!query.trim()) {
+                resultsContainer.innerHTML = `<p class="text-txt-secondary text-center py-4">Nhập từ khóa để bắt đầu tìm kiếm...</p>`;
+                return;
+            }
+
+            const matches = sampleArticles.filter(a => a.title.toLowerCase().includes(query));
+            if(matches.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-txt-secondary text-center py-4">Không tìm thấy kết quả phù hợp.</p>`;
+            } else {
+                resultsContainer.innerHTML = matches.map(m => `
+                    <div onclick="closeSearchModal(); openArticleDetail('${m.id}')" class="p-2.5 rounded-btn bg-dark-bg hover:bg-dark-surface border border-dark-border flex items-center justify-between cursor-pointer">
+                        <span class="font-medium text-txt-primary line-clamp-1">${m.title}</span>
+                        <span class="text-neon-primary text-[10px] font-bold px-2 py-0.5 rounded bg-neon-primary/10">${m.category}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function handleDownload(type) {
+            showToast('Đang tạo liên kết an toàn...', `Link "${type}" đã sẵn sàng.`);
+            setTimeout(() => {
+                showToast('Đang tải tập tin xuống!', 'Kiểm tra trình duyệt của bạn.');
+            }, 1800);
+        }
+
+        function showToast(title, desc) {
+            const toast = document.getElementById('toast-notify');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-desc').innerText = desc;
+            
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
