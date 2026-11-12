@@ -126,16 +126,16 @@ export const CERT_PLANS: CertPlan[] = [
       ],
    },
    {
-      id: "vip-60d",
+      id: "vip-45d",
       icon: "fa-solid fa-shield-halved",
       iconToneClassName: "text-neon-primary",
-      title: "VIP Lấy Ngay 60D",
+      title: "VIP Lấy Ngay 45D",
       subtitle: "Full tính năng, hỗ trợ mọi iOS",
       price: "175.000đ",
       period: " / 12 tháng",
-      zaloPackage: "Lấy Ngay BH 60 Ngày",
+      zaloPackage: "Lấy Ngay BH 45 Ngày",
       highlighted: true,
-      badge: "BẢO HÀNH 60 NGÀY",
+      badge: "BẢO HÀNH 45 NGÀY",
       features: [
          {
             icon: "fa-solid fa-mobile-screen-button",
@@ -145,7 +145,7 @@ export const CERT_PLANS: CertPlan[] = [
          {
             icon: "fa-solid fa-shield-halved",
             iconClassName: TONE.included,
-            text: "Bảo hành 60 ngày 1 đổi 1",
+            text: "Bảo hành 45 ngày 1 đổi 1",
          },
          {
             icon: "fa-solid fa-unlock-keyhole",
@@ -176,14 +176,14 @@ export const CERT_PLANS: CertPlan[] = [
       ],
    },
    {
-      id: "vip-320d",
+      id: "vip-305d",
       icon: "fa-solid fa-crown",
       iconToneClassName: "text-yellow-400",
-      title: "VIP Premium 320D",
-      subtitle: "Bảo hành 320 ngày siêu an tâm",
+      title: "VIP Premium 305D",
+      subtitle: "Bảo hành 305 ngày siêu an tâm",
       price: "255.000đ",
       period: " / 12 tháng",
-      zaloPackage: "Premium BH 320 Ngày",
+      zaloPackage: "Premium BH 305 Ngày",
       features: [
          {
             icon: "fa-solid fa-mobile-screen-button",
@@ -193,7 +193,7 @@ export const CERT_PLANS: CertPlan[] = [
          {
             icon: "fa-solid fa-shield-halved",
             iconClassName: TONE.caveat,
-            text: "Bảo hành 320 ngày siêu dài",
+            text: "Bảo hành 305 ngày siêu dài",
             className: "text-amber-400/90",
          },
 
